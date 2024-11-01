@@ -42,9 +42,9 @@ class FingerCatcher:
             self.hand_track.pop()
         if results.multi_hand_landmarks:
             for hand in results.multi_hand_landmarks:
-                h, w, _ = img.shape
-                cx, cy = int(hand.landmark[8].x * w), int(hand.landmark[8].y * h)
-                self.hand_track.appendleft((cx, cy))
+                w, h, _ = img.shape
+                x, y = int(hand.landmark[8].x * w), int(hand.landmark[8].y * h)
+                self.hand_track.appendleft((x, y))
                 self.hand_track = narrow_curve(self.hand_track, 40)
         else:
             self.hand_track.clear()
