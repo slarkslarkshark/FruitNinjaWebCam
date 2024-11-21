@@ -7,17 +7,23 @@ class Enemy:
     def __init__(self, color, WIDTH, HEIGHT):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
+
         enemy_width = random.randint(20, 100)
         enemy_height = random.randint(20, 100)
         x = random.randint(0, WIDTH - enemy_width)
-        y = 0
+        y = HEIGHT
+        self.time = 1
+        self.acceleration = random.choice([0.05, 0.1])
+        self.speed_x = random.choice([-1.5, -1,  1, 1.5])
+        self.speed_y = random.choice([9.8, 10.8, 11.8]) 
+
+        self.color = color
         self.rect = pygame.Rect(x, y, enemy_width, enemy_height)
 
-        self.speed = random.randint(3, 8)
-        self.color = color
-
     def move(self):
-        self.rect.top += self.speed
+        self.rect.left += self.speed_x
+        self.rect.top = self.HEIGHT - self.speed_y * self.time + self.acceleration * self.time**2
+        self.time += 1
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, (self.rect.left, self.rect.top,
@@ -35,8 +41,10 @@ class Player:
     def __iter__(self):
         return iter(self.hand_track)
 
-    def pop(self):
-        if len(self.hand_track) >= 4:
+    def pop(self, isDetected=True):
+        if len(self.hand_track) >= 4 and isDetected:
+            self.hand_track.pop()
+        elif len(self.hand_track) != 0 and not isDetected:
             self.hand_track.pop()
 
     def update(self, x, y):

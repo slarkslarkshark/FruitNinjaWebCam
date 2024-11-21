@@ -1,6 +1,6 @@
 import pygame
 import cv2
-import pygame_windows as pw
+import pywindows as pw
 from finger import FingerCatcher
 WIDTH, HEIGHT = 480, 640
 

@@ -14,11 +14,12 @@ class FingerCatcher:
         img = cv2.flip(img, 1)
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = self.hands.process(imgRGB)
-        self.hand_track.pop()
+        
         if results.multi_hand_landmarks:
+            self.hand_track.pop()
             for hand in results.multi_hand_landmarks:
                 x, y = hand.landmark[8].x, hand.landmark[8].y
                 self.hand_track.update(x, y)
         else:
-            self.hand_track.clear()
+            self.hand_track.pop(isDetected=False)
         return self.hand_track

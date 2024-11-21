@@ -2,7 +2,6 @@ import pygame
 import cv2
 import random
 import characters as pers
-import pygame_windows as pw
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
@@ -122,13 +121,13 @@ class GameWindow:
                     game_mode = "menu"
                     
         if random.random() < 0.02: 
-            self.enemies.append(pers.Enemy(pw.RED, self.WIDTH, self.HEIGHT))
+            self.enemies.append(pers.Enemy(RED, self.WIDTH, self.HEIGHT))
 
         for enemy in self.enemies:
             enemy.move()
 
         self.enemies = [r for r in self.enemies if r.rect.top < self.HEIGHT]
-        screen.fill(pw.BLACK)
+        screen.fill(BLACK)
 
         _, img = cap.read()
         track = catcher.find_finger(img)
