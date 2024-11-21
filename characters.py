@@ -33,10 +33,12 @@ class Enemy:
         return self.rect.colliderect(rect)
     
 class Player:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, CAMWIDTH, CAMHEIGHT, WIDTH, HEIGHT):
         self.hand_track = deque()
-        self.WIDTH = WIDTH
-        self.HEIGHT = HEIGHT
+        self.CAMWIDTH = CAMWIDTH
+        self.CAMHEIGHT = CAMHEIGHT
+        self.x_shift = (CAMWIDTH - WIDTH) // 2
+        self.y_shift = (CAMHEIGHT - HEIGHT) // 2
 
     def __iter__(self):
         return iter(self.hand_track)
@@ -48,8 +50,8 @@ class Player:
             self.hand_track.pop()
 
     def update(self, x, y):
-        new_x = int(x * self.HEIGHT)
-        new_y = int(y * self.WIDTH)
+        new_x = int(x * self.CAMWIDTH) - self.x_shift
+        new_y = int(y * self.CAMHEIGHT) - self.y_shift
         self.hand_track.appendleft((new_x, new_y))
 
     def collide(self, enemy):

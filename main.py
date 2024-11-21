@@ -2,18 +2,19 @@ import pygame
 import cv2
 import pywindows as pw
 from finger import FingerCatcher
-WIDTH, HEIGHT = 480, 640
+WIDTH, HEIGHT = 800, 600
+CAMWIDTH, CAMHEIGHT = WIDTH + 400, HEIGHT + 300
 
 if __name__ == "__main__":
-    catcher = FingerCatcher(WIDTH, HEIGHT)
+    catcher = FingerCatcher(CAMWIDTH, CAMHEIGHT, WIDTH, HEIGHT)
     cap = cv2.VideoCapture(0)
     pygame.init()
-    screen = pygame.display.set_mode((HEIGHT, WIDTH))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Случайные прямоугольники")
 
     start_window = pw.StartWindow()
     settings_window = pw.SettingsWindow()
-    game_window = pw.GameWindow(WIDTH, HEIGHT)
+    game_window = pw.GameWindow(WIDTH, HEIGHT, CAMWIDTH, CAMHEIGHT)
     clock = pygame.time.Clock()
     cap.read()
     game_mode = "menu"

@@ -104,10 +104,14 @@ class SettingsWindow:
         return game_mode, True
 
 class GameWindow:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, WIDTH, HEIGHT, CAMWIDTH, CAMHEIGHT):
         self.enemies = []
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
+        self.CAMWIDTH = CAMWIDTH
+        self.CAMHEIGHT = CAMHEIGHT
+        self.x_shift = (CAMWIDTH - WIDTH) // 2
+        self.y_shift = (CAMHEIGHT - HEIGHT) // 2
 
     def play(self, screen, cap, catcher):
         running = True
@@ -130,7 +134,12 @@ class GameWindow:
         screen.fill(BLACK)
 
         _, img = cap.read()
+        img = cv2.resize(img, (self.CAMWIDTH, self.CAMHEIGHT))
         track = catcher.find_finger(img)
+        img = img[
+            self.y_shift: self.CAMHEIGHT - self.y_shift,
+            self.x_shift: self.CAMWIDTH - self.x_shift
+            ]
         img = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         screen.blit(pygame.surfarray.make_surface(img), (0, 0))

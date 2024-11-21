@@ -3,12 +3,10 @@ import mediapipe as mp
 from characters import Player
 
 class FingerCatcher:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, CAMWIDTH, CAMHEIGHT, WIDTH, HEIGHT):
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(max_num_hands=1)
-        self.WIDTH = WIDTH
-        self.HEIGHT = HEIGHT
-        self.hand_track = Player(WIDTH, HEIGHT)
+        self.hand_track = Player(CAMWIDTH, CAMHEIGHT, WIDTH, HEIGHT)
         
     def find_finger(self, img):
         img = cv2.flip(img, 1)
