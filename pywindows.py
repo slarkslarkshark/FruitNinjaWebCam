@@ -60,16 +60,23 @@ class StartWindow:
         return game_mode, True
 
 class SettingsWindow:
-    def __init__(self):
+    def __init__(self, WIDTH, HEIGHT, CAMWIDTH, CAMHEIGHT):
         self.b_camera = pygame.Rect(80, 80, 250, 50)
         self.b_back = pygame.Rect(80, 160, 250, 50)
+
+        self.WIDTH = WIDTH
+        self.HEIGHT = HEIGHT
+        self.CAMWIDTH = CAMWIDTH
+        self.CAMHEIGHT = CAMHEIGHT
+        self.x_shift = (CAMWIDTH - WIDTH) // 2
+        self.y_shift = (CAMHEIGHT - HEIGHT) // 2
 
         font = pygame.font.SysFont("comic sans ms", 40)
         self.camera_text = font.render("Camera Testing", True, WHITE)
         self.back_text = font.render("Back", True, WHITE)
         self.camera_on = False
     
-    def plot(self, screen, game_mode, cap):
+    def plot(self, screen, game_mode, img):
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -77,6 +84,7 @@ class SettingsWindow:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.camera_on = False
+                    screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
             if event.type == pygame.MOUSEBUTTONDOWN and not self.camera_on:
                 if event.button == 1:
                     x = event.pos[0]
@@ -85,16 +93,21 @@ class SettingsWindow:
                     if x > self.b_camera.left and x < self.b_camera.right \
                     and self.b_camera.top and y < self.b_camera.bottom:
                         self.camera_on = True
+                        screen = pygame.display.set_mode((self.CAMWIDTH, self.CAMHEIGHT))
                         
                     if x > self.b_back.left and x < self.b_back.right \
                     and y > self.b_back.top and y < self.b_back.bottom:
                         game_mode = "menu"
 
         if self.camera_on:
-            _, img = cap.read()
             img = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             screen.blit(pygame.surfarray.make_surface(img), (0, 0))
+            pygame.draw.rect(screen, RED, (self.x_shift,
+                                           self.y_shift,
+                                           self.WIDTH,
+                                           self.HEIGHT),
+                                           5)
         else:
             screen.fill(BLACK)
             pygame.draw.rect(screen, GREEN, self.b_camera)
@@ -113,7 +126,7 @@ class GameWindow:
         self.x_shift = (CAMWIDTH - WIDTH) // 2
         self.y_shift = (CAMHEIGHT - HEIGHT) // 2
 
-    def play(self, screen, cap, catcher):
+    def play(self, screen, img, catcher):
         running = True
         game_mode = "game"
         for event in pygame.event.get():
@@ -133,8 +146,6 @@ class GameWindow:
         self.enemies = [r for r in self.enemies if r.rect.top < self.HEIGHT]
         screen.fill(BLACK)
 
-        _, img = cap.read()
-        img = cv2.resize(img, (self.CAMWIDTH, self.CAMHEIGHT))
         track = catcher.find_finger(img)
         img = img[
             self.y_shift: self.CAMHEIGHT - self.y_shift,
