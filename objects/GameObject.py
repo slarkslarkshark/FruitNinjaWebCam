@@ -4,12 +4,13 @@ import math
 
 
 class GameObject:
-    def __init__(self, x, y, width, height, color=(255, 0, 0)):
+    def __init__(self, x, y, width, height, color=(255, 0, 0), image=None):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.color = color
+        self.image = image
 
         self.vel_x = random.uniform(-3, 3)
         self.vel_y = random.uniform(-10, -8)
@@ -30,7 +31,12 @@ class GameObject:
 
     def draw(self, screen):
         """Отрисовка объекта"""
-        pygame.draw.rect(screen, self.color, self.bbox)
+        if self.image:
+            # Scale image to match object size
+            scaled_image = pygame.transform.scale(self.image, (self.width, self.height))
+            screen.blit(scaled_image, self.bbox)
+        else:
+            pygame.draw.rect(screen, self.color, self.bbox)
 
     def is_out_of_bounds(self, screen_width, screen_height):
         """Проверяет, вышел ли объект за пределы экрана"""

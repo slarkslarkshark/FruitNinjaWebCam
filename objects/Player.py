@@ -36,7 +36,7 @@ class Player:
                     x = int(hand.landmark[8].x * frame.shape[1])
                     y = int(hand.landmark[8].y * frame.shape[0])
                     finger_pos = (x, y)
-                    cv2.circle(frame, finger_pos, 4, (0, 255, 0), -1)
+                    # Don't draw on cv2 frame - we'll draw with pygame for better animations
 
             with self.lock:
                 self.current_frame = frame.copy()
