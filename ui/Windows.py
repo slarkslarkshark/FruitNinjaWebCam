@@ -449,7 +449,7 @@ class MainMenuWindow(PygameWindow):
     def close_game(self):
         self.is_running = False
         pygame.quit()
-        exit()
+        raise SystemExit(0)
 
     def update(self):
         """Update floating fruit animations"""

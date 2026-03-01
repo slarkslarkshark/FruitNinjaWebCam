@@ -54,14 +54,28 @@ def build_exe(onefile: bool) -> None:
             "--clean",
             "--windowed",
             *mode_flags,
+            "--optimize",
+            "2",
             "--name",
             "FruitNinjaWebCam",
             "--collect-all",
             "mediapipe",
-            "--collect-all",
-            "cv2",
-            "--collect-all",
-            "pygame",
+            "--exclude-module",
+            "pygame.tests",
+            "--exclude-module",
+            "mediapipe.tasks.python.test",
+            "--exclude-module",
+            "mediapipe.tasks.python.benchmark",
+            "--exclude-module",
+            "matplotlib.tests",
+            "--exclude-module",
+            "numpy.tests",
+            "--exclude-module",
+            "jax",
+            "--exclude-module",
+            "jaxlib",
+            "--exclude-module",
+            "scipy",
             "--hidden-import",
             "shapely",
             "--hidden-import",
@@ -74,7 +88,7 @@ def build_exe(onefile: bool) -> None:
 def print_result() -> None:
     print("\nBuild completed.")
     print(f"Output directory: {DIST_DIR}")
-    print("Send the built folder or .exe from dist to Windows users.")
+    print("Default output is a single file: dist/FruitNinjaWebCam.exe")
 
 
 def parse_args() -> argparse.Namespace:
@@ -92,7 +106,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--onefile",
         action="store_true",
-        help="Use onefile mode (smaller distribution convenience, less startup speed).",
+        help="Build a single .exe file (default mode).",
+    )
+    parser.add_argument(
+        "--onedir",
+        action="store_true",
+        help="Build as folder (faster startup, larger delivery size).",
     )
     parser.add_argument(
         "--skip-os-check",
@@ -122,7 +141,8 @@ def main() -> int:
             print(
                 f"Note: existing spec file {SPEC_FILE.name} may be overwritten by PyInstaller."
             )
-        build_exe(onefile=args.onefile)
+        use_onefile = args.onefile or not args.onedir
+        build_exe(onefile=use_onefile)
         print_result()
     else:
         print("Dependencies installed. Build was skipped.")

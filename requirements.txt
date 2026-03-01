@@ -14,7 +14,7 @@ kiwisolver==1.4.9
     # via matplotlib
 matplotlib==3.10.8
     # via mediapipe
-mediapipe==0.10.32
+mediapipe==0.10.21
     # via fruitninjawebcam (pyproject.toml)
 numpy==2.4.2
     # via
