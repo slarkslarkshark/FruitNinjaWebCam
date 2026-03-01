@@ -1,7 +1,7 @@
 # FruitNinjaWebCam
-
-Turn your room into an arcade arena and slice flying fruit with real hand movements.
 **FruitNinjaWebCam** combines fast reflex gameplay with **live webcam tracking**, making every swipe feel physical and satisfying.
+
+Turn your room into an arcade arena and slice flying fruit with real hand movements!
 
 ![Main Menu Screenshot](https://res.cloudinary.com/dztnoej5d/image/upload/v1772270145/main_menu_dtqlr0.png)
 
@@ -28,9 +28,9 @@ Your body is the controller. Every slash is captured in real time, creating a fr
 
 ## Start Game
 
-### Option 1: .exe for Windows
+### Option 1: `.exe for Windows`
 
-- Download .exe file
+- [Download](https://drive.google.com/file/d/1IPJgoSo-pfcVcimcNa4ArjdE2sx4eEzl/view?usp=sharing) .exe file
 - Run game
 
 ### Option 2: Using `uv`
@@ -40,7 +40,7 @@ uv sync
 uv run python main.py
 ```
 
-### Option 3: Using `requirements.txt` + venv
+### Option 3: Using `requirements.txt`
 
 ```bash
 pip install -r requirements.txt
